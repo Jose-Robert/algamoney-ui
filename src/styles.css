@@ -30,3 +30,9 @@ label {
   width: 90px;
   text-align: center;
 }
+
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+
