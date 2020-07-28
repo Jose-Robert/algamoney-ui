@@ -3,8 +3,8 @@
   background-color: #1e94d2;
 }
 
-.navbar-toogle{
-  color: #ffffff;
+.navbar-toggle {
+  color: #fff;
 }
 
 .navbar-menu {
@@ -29,18 +29,18 @@
 
   text-transform: uppercase;
   font-weight: bold;
-  color: #ffffff;
+  color: #fff;
 }
 
-.navbar-menu-item {
+.navbar-menuitem {
   padding: 15px;
 }
 
-.navbar-menu-item a {
+.navbar-menuitem a {
   color: #c0bbb7;
   text-decoration: none;
 }
 
-.navbar-menu-item a:hover {
-  color: #ffffff;
+.navbar-menuitem a:hover {
+  color: #fff;
 }
