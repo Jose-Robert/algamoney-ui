@@ -23,24 +23,10 @@ export class LancamentoService {
     const params = new URLSearchParams();
     const headers = new Headers();
 
-    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
-
-    params.set('page', filtro.pagina.toString());
-    params.set('size', filtro.itensPorPagina.toString());
-
-    if (filtro.descricao) {
-      params.set('descricao', filtro.descricao);
-    }
-
-    if (filtro.dataVencimentoInicio) {
-      params.set('dataVencimentoDe',
-        moment(filtro.dataVencimentoInicio).format('YYYY-MM-DD'));
-    }
-
-    if (filtro.dataVencimentoFim) {
-      params.set('dataVencimentoAte',
-        moment(filtro.dataVencimentoFim).format('YYYY-MM-DD'));
-    }
+    this.authorization(headers);
+    this.filterByPaginacaoLazy(filtro, params);
+    this.filterByDescricao(filtro, params);
+    this.filterByDataVencimento(filtro, params);
 
     return this.http.get(`${this.lancamentosUrl}?resumo`, { headers, search: params })
       .toPromise()
@@ -54,6 +40,31 @@ export class LancamentoService {
         };
         return resultado;
       })
+  }
+
+  filterByDescricao(filtro: LancamentoFiltro, params: URLSearchParams) {
+    if (filtro.descricao) {
+      params.set('descricao', filtro.descricao);
+    }
+  }
+
+  filterByDataVencimento(filtro: LancamentoFiltro, params: URLSearchParams) {
+    if (filtro.dataVencimentoInicio) {
+      params.set('dataVencimentoDe', moment(filtro.dataVencimentoInicio).format('YYYY-MM-DD'));
+    }
+
+    if (filtro.dataVencimentoFim) {
+      params.set('dataVencimentoAte', moment(filtro.dataVencimentoFim).format('YYYY-MM-DD'));
+    }
+  }
+
+  filterByPaginacaoLazy(filtro: LancamentoFiltro, params: URLSearchParams) {
+    params.set('page', filtro.pagina.toString());
+    params.set('size', filtro.itensPorPagina.toString());
+  }
+
+  authorization(headers: Headers) {
+    headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
   }
 
 }
