@@ -1,6 +1,6 @@
+import { PessoaService } from './pessoas/pessoa.service';
 import { LancamentoService } from './lancamentos/lancamento.service';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -23,7 +23,7 @@ import { LancamentosModule } from './lancamentos/lancamentos.module';
     LancamentosModule,
     PessoasModule
   ],
-  providers: [LancamentoService],
+  providers: [LancamentoService, PessoaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
