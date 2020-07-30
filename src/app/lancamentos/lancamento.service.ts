@@ -42,6 +42,15 @@ export class LancamentoService {
       })
   }
 
+  excluir(codigo: number): Promise<void> {
+    const headers = new Headers();
+    this.authorization(headers);
+
+    return this.http.delete(`${this.lancamentosUrl}/${codigo}`, { headers })
+      .toPromise()
+      .then(() => null);
+  }
+
   filterByDescricao(filtro: LancamentoFiltro, params: URLSearchParams) {
     if (filtro.descricao) {
       params.set('descricao', filtro.descricao);
