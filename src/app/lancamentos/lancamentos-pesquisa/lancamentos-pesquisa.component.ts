@@ -1,3 +1,4 @@
+import { ConfirmationService } from 'primeng/primeng';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { LazyLoadEvent } from 'primeng/components/common/api';
@@ -19,13 +20,14 @@ export class LancamentosPesquisaComponent implements OnInit {
 
   constructor(
     private lancamentoService: LancamentoService,
-    private toasty: ToastyService
+    private toasty: ToastyService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit() {
   }
 
-  pesquisar(pagina = 0) {
+  public pesquisar(pagina = 0) {
     this.filtro.pagina = pagina;
 
     this.lancamentoService.pesquisar(this.filtro)
@@ -35,12 +37,21 @@ export class LancamentosPesquisaComponent implements OnInit {
       });
   }
 
-  aoMudarPagina(event: LazyLoadEvent) {
+  public aoMudarPagina(event: LazyLoadEvent) {
     const pagina = event.first / event.rows;
     this.pesquisar(pagina);
   }
 
-  excluir(lancamento: any) {
+  public confirmaExclusao(lancamento: any) {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.excluir(lancamento);
+      }
+    });
+  }
+
+  public excluir(lancamento: any) {
     this.lancamentoService.excluir(lancamento.codigo)
       .then(() => {
         if (this.grid.first === 0) {
