@@ -16,7 +16,7 @@ export class PessoaService {
 
   constructor(private http: Http) { }
 
-  pesquisar(filtro: PessoaFiltro): Promise<any> {
+  public pesquisar(filtro: PessoaFiltro): Promise<any> {
     const params = new URLSearchParams();
     const headers = new Headers();
 
@@ -39,7 +39,7 @@ export class PessoaService {
       })
   }
 
-  listarTodas(): Promise<any> {
+  public listarTodas(): Promise<any> {
     const headers = new Headers();
     headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
 
@@ -48,16 +48,25 @@ export class PessoaService {
       .then(response => response.json().content);
   }
 
-  filterByPaginacaoLazy(filtro: PessoaFiltro, params: URLSearchParams) {
+  public excluir(codigo: number): Promise<void> {
+    const headers = new Headers();
+    this.authorization(headers);
+
+    return this.http.delete(`${this.pessoasUrl}/${codigo}`, { headers })
+      .toPromise()
+      .then(() => null);
+  }
+
+  public filterByPaginacaoLazy(filtro: PessoaFiltro, params: URLSearchParams) {
     params.set('page', filtro.pagina.toString());
     params.set('size', filtro.itensPorPagina.toString());
   }
 
-  authorization(headers: Headers) {
+  private authorization(headers: Headers) {
     headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
   }
 
-  filterByName(filtro: PessoaFiltro, params: URLSearchParams) {
+  public filterByName(filtro: PessoaFiltro, params: URLSearchParams) {
     if (filtro.nome) {
       params.set('nome', filtro.nome);
     }

@@ -39,9 +39,10 @@
             </ng-template>
           </p-column>
           <p-column styleClass="col-acoes">
-            <ng-template pTemplate="body">
+            <ng-template pTemplate="body" let-pessoa="rowData">
               <a pButton icon="fa-edit" pTooltip="Editar" tooltipPosition="top"></a>
-              <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top"></button>
+              <button pButton icon="fa-trash" pTooltip="Excluir" (click)="confirmaExclusao(pessoa)"
+                tooltipPosition="top"></button>
             </ng-template>
           </p-column>
       </p-dataTable>
