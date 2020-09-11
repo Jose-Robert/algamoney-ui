@@ -1,3 +1,4 @@
+import { CategoriaService } from './../categorias/categoria.service';
 import { CommonModule } from '@angular/common';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { ToastyModule } from 'ng2-toasty';
@@ -26,6 +27,7 @@ import { PessoaService } from 'app/pessoas/pessoa.service';
   providers: [
     LancamentoService,
     PessoaService,
+    CategoriaService,
     ErrorHandlerService,
     ConfirmationService,
     { provide: LOCALE_ID, useValue: 'pt-BR'},
