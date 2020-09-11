@@ -57,6 +57,16 @@ export class PessoaService {
       .then(() => null);
   }
 
+  public mudarStatus(codigo: number, ativo: boolean): Promise<void> {
+    const headers = new Headers();
+    this.authorization(headers);
+    headers.append('Content-Type', 'application/json');
+
+    return this.http.put(`${this.pessoasUrl}/${codigo}/ativo`, ativo, { headers })
+      .toPromise()
+      .then(() => null);
+  }
+
   public filterByPaginacaoLazy(filtro: PessoaFiltro, params: URLSearchParams) {
     params.set('page', filtro.pagina.toString());
     params.set('size', filtro.itensPorPagina.toString());
