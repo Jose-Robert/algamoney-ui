@@ -20,7 +20,7 @@ export class LancamentoService {
 
   constructor(private http: Http) { }
 
-  pesquisar(filtro: LancamentoFiltro): Promise<any> {
+  public pesquisar(filtro: LancamentoFiltro): Promise<any> {
     const params = new URLSearchParams();
     const headers = new Headers();
 
@@ -43,7 +43,7 @@ export class LancamentoService {
       })
   }
 
-  excluir(codigo: number): Promise<void> {
+  public excluir(codigo: number): Promise<void> {
     const headers = new Headers();
     this.authorization(headers);
 
@@ -55,11 +55,55 @@ export class LancamentoService {
   public adicionar(lancamento: Lancamento): Promise<Lancamento> {
     const headers = new Headers();
     this.authorization(headers);
-    headers.append('Content-Type', 'application/json');
+    this.ContentType(headers);
 
     return this.http.post(this.lancamentosUrl, JSON.stringify(lancamento), { headers })
       .toPromise()
       .then(response => response.json());
+  }
+
+  public atualizar(lancamento: Lancamento): Promise<Lancamento> {
+    const headers = new Headers();
+    this.authorization(headers);
+    this.ContentType(headers);
+
+    return this.http.put(`${this.lancamentosUrl}/${lancamento.codigo}`,
+        JSON.stringify(lancamento), { headers })
+      .toPromise()
+      .then(response => {
+        const lancamentoAlterado = response.json() as Lancamento;
+
+        this.converterStringsParaDatas([lancamentoAlterado]);
+
+        return lancamentoAlterado;
+      });
+  }
+
+  public buscarPorCodigo(codigo: number): Promise<Lancamento> {
+    const headers = new Headers();
+    this.authorization(headers);
+
+    return this.http.get(`${this.lancamentosUrl}/${codigo}`, { headers })
+      .toPromise()
+      .then(response => {
+        const lancamento = response.json() as Lancamento;
+
+        this.converterStringsParaDatas([lancamento]);
+
+        return lancamento;
+      });
+  }
+
+  private converterStringsParaDatas(lancamentos: Lancamento[]) {
+    for (const lancamento of lancamentos) {
+      lancamento.dataVencimento = moment(lancamento.dataVencimento,
+        'YYYY-MM-DD').toDate();
+
+      if (lancamento.dataPagamento) {
+        lancamento.dataPagamento = moment(lancamento.dataPagamento,
+          'YYYY-MM-DD').toDate();
+      }
+    }
   }
 
   filterByDescricao(filtro: LancamentoFiltro, params: URLSearchParams) {
@@ -85,6 +129,10 @@ export class LancamentoService {
 
   authorization(headers: Headers) {
     headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+  }
+
+  ContentType(headers: Headers) {
+    headers.append('Content-Type', 'application/json');
   }
 
 }
