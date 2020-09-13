@@ -1,3 +1,4 @@
+import { Pessoa } from './../shared/model/pessoa.model';
 import { Http, Headers, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 
@@ -65,6 +66,16 @@ export class PessoaService {
     return this.http.put(`${this.pessoasUrl}/${codigo}/ativo`, ativo, { headers })
       .toPromise()
       .then(() => null);
+  }
+
+  public adicionar(pessoa: Pessoa): Promise<Pessoa> {
+    const headers = new Headers();
+    this.authorization(headers);
+    headers.append('Content-Type', 'application/json');
+
+    return this.http.post(this.pessoasUrl, JSON.stringify(pessoa), { headers })
+      .toPromise()
+      .then(response => response.json());
   }
 
   public filterByPaginacaoLazy(filtro: PessoaFiltro, params: URLSearchParams) {

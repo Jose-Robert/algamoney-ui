@@ -1,6 +1,7 @@
+import { Endereco } from './endereco.model';
 export class Pessoa {
   codigo: number;
   nome: string;
-  endereco: string;
-  ativo: boolean;
+  endereco = new Endereco();
+  ativo = true;
 }
