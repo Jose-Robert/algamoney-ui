@@ -6,7 +6,7 @@ import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaService } from './../../categorias/categoria.service';
 import { Component, OnInit } from '@angular/core';
 import { Lancamento } from 'app/shared/model/lancamento.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-lancamento-cadastro',
@@ -31,7 +31,8 @@ export class LancamentoCadastroComponent implements OnInit {
     private lancamentoService: LancamentoService,
     private toasty: ToastyService,
     private errorHandle: ErrorHandlerService,
-    private router: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
     ) { }
 
   ngOnInit() {
@@ -41,7 +42,7 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   private hasCodigoLancamento() {
-    const codigoLancamento = this.router.snapshot.params['codigo'];
+    const codigoLancamento = this.route.snapshot.params['codigo'];
 
     if (codigoLancamento) {
       this.carregarLancamento(codigoLancamento);
@@ -87,11 +88,10 @@ export class LancamentoCadastroComponent implements OnInit {
 
   public adicionarLancamento(form: FormControl) {
     this.lancamentoService.adicionar(this.lancamento)
-      .then(() => {
+      .then(lancamentoAdicionado => {
         this.toasty.success('Lançamento adicionado com sucesso!');
 
-        form.reset();
-        this.lancamento = new Lancamento();
+        this.router.navigate(['/lancamentos', lancamentoAdicionado.codigo])
       })
       .catch(error => this.errorHandle.handle(error));
   }
@@ -104,6 +104,15 @@ export class LancamentoCadastroComponent implements OnInit {
         this.toasty.success('Lançamento alterado com sucesso!');
       })
       .catch(erro => this.errorHandle.handle(erro));
+  }
+
+  public novo(form: FormControl) {
+    form.reset();
+    setTimeout(function() {
+      this.lancamento = new Lancamento();
+    }.bind(this), 1)
+
+    this.router.navigate(['/lancamentos/novo']);
   }
 
   get isEdit(): boolean {
