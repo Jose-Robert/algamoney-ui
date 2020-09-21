@@ -8,6 +8,7 @@ import { ErrorHandlerService } from './error-handler.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LancamentoService } from 'app/lancamentos/lancamento.service';
 import { PessoaService } from 'app/pessoas/pessoa.service';
+import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 
 
 
@@ -20,7 +21,7 @@ import { PessoaService } from 'app/pessoas/pessoa.service';
     ConfirmDialogModule
 
   ],
-  declarations: [NavbarComponent],
+  declarations: [NavbarComponent, PaginaNaoEncontradaComponent],
   exports: [
     NavbarComponent,
     ToastyModule,
