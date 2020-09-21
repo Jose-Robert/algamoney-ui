@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { ToastyService } from 'ng2-toasty';
 import { LancamentoService } from 'app/lancamentos/lancamento.service';
 import { FormControl } from '@angular/forms';
@@ -32,7 +33,8 @@ export class LancamentoCadastroComponent implements OnInit {
     private toasty: ToastyService,
     private errorHandle: ErrorHandlerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private title: Title
     ) { }
 
   ngOnInit() {
@@ -44,6 +46,8 @@ export class LancamentoCadastroComponent implements OnInit {
   private hasCodigoLancamento() {
     const codigoLancamento = this.route.snapshot.params['codigo'];
 
+    this.title.setTitle('Novo Lançamento');
+
     if (codigoLancamento) {
       this.carregarLancamento(codigoLancamento);
     }
@@ -53,6 +57,7 @@ export class LancamentoCadastroComponent implements OnInit {
     this.lancamentoService.buscarPorCodigo(codigo)
       .then(lancamento => {
         this.lancamento = lancamento;
+        this.atualizarTituloEdicao();
       })
       .catch(error => this.errorHandle.handle(error));
   }
@@ -80,7 +85,6 @@ export class LancamentoCadastroComponent implements OnInit {
   public salvar(form: FormControl) {
     if (this.isEdit) {
       this.atualizarLancamento(form);
-      console.log(form)
     } else {
       this.adicionarLancamento(form);
     }
@@ -102,6 +106,7 @@ export class LancamentoCadastroComponent implements OnInit {
         this.lancamento = lancamento;
 
         this.toasty.success('Lançamento alterado com sucesso!');
+        this.atualizarTituloEdicao();
       })
       .catch(erro => this.errorHandle.handle(erro));
   }
@@ -113,6 +118,10 @@ export class LancamentoCadastroComponent implements OnInit {
     }.bind(this), 1)
 
     this.router.navigate(['/lancamentos/novo']);
+  }
+
+  private atualizarTituloEdicao() {
+    this.title.setTitle(`Edição de lançamento: ${this.lancamento.descricao}`);
   }
 
   get isEdit(): boolean {

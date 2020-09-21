@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { CategoriaService } from './../categorias/categoria.service';
 import { CommonModule } from '@angular/common';
@@ -33,6 +34,7 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component'
     CategoriaService,
     ErrorHandlerService,
     ConfirmationService,
+    Title,
     { provide: LOCALE_ID, useValue: 'pt-BR'},
   ]
 })
