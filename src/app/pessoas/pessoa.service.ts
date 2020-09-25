@@ -78,6 +78,26 @@ export class PessoaService {
       .then(response => response.json());
   }
 
+  public atualizar(pessoa: Pessoa): Promise<Pessoa> {
+    const headers = new Headers();
+    this.authorization(headers);
+    headers.append('Content-Type', 'application/json');
+
+    return this.http.put(`${this.pessoasUrl}/${pessoa.codigo}`,
+        JSON.stringify(pessoa), { headers })
+      .toPromise()
+      .then(response => response.json() as Pessoa);
+  }
+
+  public buscarPorCodigo(codigo: number): Promise<Pessoa> {
+    const headers = new Headers();
+    this.authorization(headers);
+
+    return this.http.get(`${this.pessoasUrl}/${codigo}`, { headers })
+      .toPromise()
+      .then(response => response.json() as Pessoa);
+  }
+
   public filterByPaginacaoLazy(filtro: PessoaFiltro, params: URLSearchParams) {
     params.set('page', filtro.pagina.toString());
     params.set('size', filtro.itensPorPagina.toString());
