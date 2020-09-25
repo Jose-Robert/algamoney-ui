@@ -1,9 +1,10 @@
 import { ErrorHandlerService } from './../../core/error-handler.service';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { ToastyService } from 'ng2-toasty';
 import { LazyLoadEvent } from 'primeng/components/common/api';
 import { ConfirmationService } from 'primeng/primeng';
 import { PessoaFiltro, PessoaService } from './../pessoa.service';
+import { Title } from '@angular/platform-browser';
 
 
 
@@ -12,7 +13,7 @@ import { PessoaFiltro, PessoaService } from './../pessoa.service';
   templateUrl: './pessoas-pesquisa.component.html',
   styleUrls: ['./pessoas-pesquisa.component.css']
 })
-export class PessoasPesquisaComponent {
+export class PessoasPesquisaComponent implements OnInit {
 
   totalRegistros = 0;
   filtro = new PessoaFiltro();
@@ -23,8 +24,13 @@ export class PessoasPesquisaComponent {
     private pessoaService: PessoaService,
     private toasty: ToastyService,
     private confirmationService: ConfirmationService,
-    private errorHandler: ErrorHandlerService
+    private errorHandler: ErrorHandlerService,
+    private title: Title
     ) { }
+
+  ngOnInit(): void {
+    this.title.setTitle('Pesquisa de pessoas');
+  }
 
   public pesquisar(pagina = 0) {
     this.filtro.pagina = pagina;
